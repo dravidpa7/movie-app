@@ -1,5 +1,5 @@
 import React from 'react'
-import MovieCard from '../MovieCard';
+import MovieCard from '../components/MovieCard';
 import { useState } from 'react';
 
 function Home(){
@@ -35,8 +35,16 @@ function Home(){
             <div className="movie-grid">
                 {
                     movies.map((movie)=>(
-                        <MovieCard movie={movie} key={movie.id}/>
+
+                        movie.title.toLowerCase().startsWith(searchQuery) 
+                        && <MovieCard movie={movie} key={movie.id}/>
                     ))
+
+                    // instend 
+                    // if (movie.title.toLowerCase().startsWith(searchQuery)) {
+                    //     return <MovieCard ... />
+                    // }
+
                 }
             </div>
         </div>
