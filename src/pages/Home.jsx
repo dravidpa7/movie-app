@@ -1,17 +1,36 @@
 import React from 'react'
 import MovieCard from '../components/MovieCard';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { searchMovies, getPopularMovies } from '../services/api';
+import "../css/Home.css"
 
 function Home(){
 
     const [searchQuery,setSearchQuery] = useState("");
 
-    const movies =[
-        {id:1, title:"John Wick", release_date:"2020"},
-        {id:2, title:"Stan Wick", release_date:"2021"},
-        {id:3, title:"Ban Wick", release_date:"2023"},
-        {id:4, title:"Man Wick", release_date:"2024"},
-    ];
+    const [movies, setMovies] = useState([]); 
+
+    const [error,setError] = useState(null);
+
+    const [loading,setLoading] = useState(true);
+
+    useEffect (() => {
+        const loadPopularMovies = async () =>{
+            try{
+                const popularMovies = await getPopularMovies()
+                setMovies(popularMovies)
+            }
+            catch(err){
+                console.log(err);
+                setError("Failed to Load movies.....")
+            }
+            finally{
+                setLoading(false)
+            }
+
+        }
+        loadPopularMovies()
+    }, [])
 
     const handleSearch = (e) =>{
         e.preventDefault()
@@ -32,12 +51,12 @@ function Home(){
                 <button type='submit' className='search-button'>search</button>
             </form>
 
-            <div className="movie-grid">
+            <div className="movies-grid">
                 {
                     movies.map((movie)=>(
-
-                        movie.title.toLowerCase().startsWith(searchQuery) 
-                        && <MovieCard movie={movie} key={movie.id}/>
+                        console.log(movie)
+                        // movie.#TITLE.toLowerCase().startsWith(searchQuery) 
+                        // && <MovieCard movie={movie} key={movie.id}/>
                     ))
 
                     // instend 
